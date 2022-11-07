@@ -7,4 +7,5 @@ In order for the startcode to work you have to do the following steps:
 5. In the mavenworkflow.yml file check that it uses the correct branch main/master.
 6. Add a mysql datasource with the database you are going to use.
 7. Head to persistence.xml and make sure it uses the correct DB and has the right username and password. 
-8. You can now commit and push and head to GitHub actions, and hopefully it runs with no problems if you followed all the steps above.
+8. Add configuration to Tomcat
+9. You can now commit and push and head to GitHub actions, and hopefully it runs with no problems if you followed all the steps above.
