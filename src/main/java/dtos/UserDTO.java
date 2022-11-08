@@ -2,30 +2,38 @@ package dtos;
 
 import entities.Role;
 import entities.User;
+import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class UserDTO {
 
     private Long id;
     private String userName;
     private String userPass;
+    private List<String> roles;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String userName, String userPass) {
+    public UserDTO(Long id, String userName, String userPass, List<String> roles) {
         this.id = id;
         this.userName = userName;
         this.userPass = userPass;
+        this.roles = roles;
+    }
+
+    public UserDTO(String userName, String userPass, List<String> roles) {
+        this.userName = userName;
+        this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
+        this.roles = roles;
     }
 
     public UserDTO(User u) {
         this.id = u.getId();
         this.userName = u.getUserName();
-        this.userPass = u.getUserPass();
+        this.userPass = BCrypt.hashpw(u.getUserPass(), BCrypt.gensalt());
+        this.roles = u.getRolesAsStrings();
     }
 
 
@@ -35,6 +43,14 @@ public class UserDTO {
             userDTOList.add(new UserDTO(user));
         });
         return userDTOList;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -84,38 +100,6 @@ public class UserDTO {
     }
 
 
-
-// ROLE INNER DTO
-
-    public static class RoleInnerDTO {
-        private String roleName;
-
-        public RoleInnerDTO() {
-        }
-
-        public RoleInnerDTO(String roleName) {
-            this.roleName = roleName;
-        }
-
-        public RoleInnerDTO(Role r) {
-            this.roleName = r.getRoleName();
-        }
-
-        public String getRoleName() {
-            return roleName;
-        }
-
-        public void setRoleName(String roleName) {
-            this.roleName = roleName;
-        }
-
-        @Override
-        public String toString() {
-            return "RoleInnerDTO{" +
-                    "roleName='" + roleName + '\'' +
-                    '}';
-        }
-    }
 }
 
 

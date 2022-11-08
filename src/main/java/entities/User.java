@@ -1,15 +1,16 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import dtos.UserDTO;
 import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
+@NamedQuery(name = "User.deleteAllRows", query = "DELETE from User")
 @Table(name = "users")
 public class User implements Serializable {
 
@@ -34,7 +35,7 @@ public class User implements Serializable {
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
             @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Role> roleList = new ArrayList<>();
 
     public List<String> getRolesAsStrings() {
@@ -51,13 +52,30 @@ public class User implements Serializable {
     public User() {
     }
 
-    public boolean verifyPassword(String pw) {
-        return (BCrypt.checkpw(pw, userPass));
+    public User(String userName, String userPass, List<Role> roleList) {
+        this.userName = userName;
+        this.userPass = userPass;
+        this.roleList = roleList;
     }
 
     public User(String userName, String userPass) {
         this.userName = userName;
         this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
+    }
+
+    public boolean verifyPassword(String pw) {
+        return (BCrypt.checkpw(pw, userPass));
+    }
+
+    public User(UserDTO userDTO) {
+        this.id = userDTO.getId();
+        this.userName = userDTO.getUserName();
+        this.userPass = BCrypt.hashpw(userDTO.getUserPass(), BCrypt.gensalt());
+        List<Role> roleList = new ArrayList<>();
+        for (String role : userDTO.getRoles()) {
+            roleList.add(new Role(role));
+        }
+        this.roleList = roleList;
     }
 
     public Long getId() {
@@ -96,4 +114,16 @@ public class User implements Serializable {
         roleList.add(userRole);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId().equals(user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

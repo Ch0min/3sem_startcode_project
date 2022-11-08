@@ -1,0 +1,38 @@
+### Get All Users
+GET http://localhost:8080/api/info/all
+Accept: application/json
+
+### Get a User By ID
+GET http://localhost:8080/api/info/user/3
+Accept: application/json
+
+### Create a User
+POST http://localhost:8080/api/info
+Content-Type: application/json
+
+{
+  "userName": "Testemor",
+  "userPass": "Lol123",
+  "roles": [
+    ""
+  ]
+}
+
+### Update a User
+PUT http://localhost:8080/api/info/user/update
+Content-Type: application/json
+
+{
+  "id": 3,
+  "userName": "Testefar",
+  "userPass": "test123",
+  "roles": [
+    "user"
+  ]
+}
+
+
+
+### Delete A User
+DELETE http://localhost:8080/api/info/user/4
+Content-Type: application/json
