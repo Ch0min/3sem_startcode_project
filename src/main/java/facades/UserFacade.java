@@ -10,6 +10,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import security.errorhandling.AuthenticationException;
 import utils.EMF_Creator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class UserFacade {
             query.setParameter("username", username);
             user = query.getSingleResult();
 
-            if (user == null || !user.verifyPassword(password)) {
+            if (/* user == null ||*/ !user.verifyPassword(password)) {
                 throw new AuthenticationException("Invalid username or password");
             }
         } catch (NoResultException e) {
@@ -58,7 +59,11 @@ public class UserFacade {
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
             List<User> users = query.getResultList();
 
-            return UserDTO.getUserDTOs(users);
+            List<UserDTO> userDTOList = new ArrayList<>();
+            for (User user : users) {
+                userDTOList.add(new UserDTO(user));
+            }
+            return userDTOList;
         } finally {
             em.close();
         }
@@ -81,10 +86,14 @@ public class UserFacade {
     public UserDTO createUser(UserDTO userDTO) {
         User user = new User(userDTO);
         EntityManager em = emf.createEntityManager();
+        try {
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
             return new UserDTO(user);
+        } finally {
+            em.close();
+        }
     }
 
 
