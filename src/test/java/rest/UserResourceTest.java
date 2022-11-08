@@ -52,8 +52,6 @@ class UserResourceTest {
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
-    private static UserFacade facade;
-
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
@@ -64,7 +62,6 @@ class UserResourceTest {
         //This method must be called before you request the EntityManagerFactory
         EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactoryForTest();
-        facade = UserFacade.getUserFacade(emf);
 
         httpServer = startServer();
         //Setup RestAssured
@@ -110,18 +107,21 @@ class UserResourceTest {
 
     @Test
     void getAllUsers() {
-        List<UserDTO> userDTOList;
-
-        userDTOList = given()
-                .contentType("application/json")
+        given()
                 .when()
                 .get("/info/all")
-                .then()
-                .extract().body().jsonPath().getList("", UserDTO.class);
+                .then().equals(contains(new UserDTO(u1)));
 
-        UserDTO u1dto = new UserDTO(u1);
-        UserDTO u2dto = new UserDTO(u2);
-        assertThat(userDTOList, containsInAnyOrder(u1dto, u2dto));
+//        List<UserDTO> userDTOList = given()
+//                .contentType("application/json")
+//                .when()
+//                .get("/info/all")
+//                .then()
+//                .extract().body().jsonPath().getList("", UserDTO.class);
+//
+//        UserDTO u1dto = new UserDTO(u1);
+//        UserDTO u2dto = new UserDTO(u2);
+//        assertThat(userDTOList, containsInAnyOrder(u1dto, u2dto));
 //        assertEquals(2, userDTOList.size());      // Virker også
     }
 
@@ -135,8 +135,6 @@ class UserResourceTest {
                 .get("/info/user/" + u1.getId()).as(UserDTO.class);
 
         assertThat(userDTO, equalTo(new UserDTO(u1)));
-
-
     }
 
 

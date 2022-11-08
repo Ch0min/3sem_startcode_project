@@ -78,20 +78,6 @@ public class UserFacade {
         }
     }
 
-//
-//    public UserDTO createUser(UserDTO userDTO) {
-//        User user = new User(userDTO);
-//        EntityManager em = getEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            em.persist(user);
-//            em.getTransaction().commit();
-//            return new UserDTO(user);
-//        } finally {
-//            em.close();
-//        }
-//    }
-
     public UserDTO createUser(UserDTO userDTO) {
         User user = new User(userDTO);
         EntityManager em = emf.createEntityManager();
@@ -114,7 +100,6 @@ public class UserFacade {
         } finally {
             em.close();
         }
-
     }
 
 
@@ -130,17 +115,5 @@ public class UserFacade {
             em.close();
         }
     }
-
-
-    public static void main(String[] args) {
-        emf = EMF_Creator.createEntityManagerFactory();
-        UserFacade uf = getUserFacade(emf);
-//        System.out.println(uf.getAllUsers());
-//        System.out.println(uf.getUserByID(3L));
-//        System.out.println(uf.updateUser(new UserDTO(Long.valueOf(3), "TestPer", "Test123")));
-
-
-    }
-
 
 }
