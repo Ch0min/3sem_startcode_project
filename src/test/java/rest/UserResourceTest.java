@@ -112,12 +112,17 @@ class UserResourceTest {
 
     @Test
     void getUserById() {
-        UserDTO userDTO = given()
-                .contentType("application/json")
+        given()
                 .when()
-                .get("/info/user/" + u1.getId()).as(UserDTO.class);
+                .get("/info/user/" + u1.getId())
+                .then().equals((new UserDTO(u1)));
 
-        assertThat(userDTO, equalTo(new UserDTO(u1)));
+//        UserDTO userDTO = given()
+//                .contentType("application/json")
+//                .when()
+//                .get("/info/user/" + u1.getId()).as(UserDTO.class);
+//
+//        assertThat(userDTO, equalTo(new UserDTO(u1)));
     }
 
 

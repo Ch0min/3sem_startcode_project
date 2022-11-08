@@ -1,17 +1,13 @@
 package facades;
 
 import dtos.UserDTO;
-import entities.Role;
 import entities.User;
 
 import javax.persistence.*;
 
-import org.mindrot.jbcrypt.BCrypt;
 import security.errorhandling.AuthenticationException;
-import utils.EMF_Creator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class UserFacade {
@@ -124,5 +120,4 @@ public class UserFacade {
             em.close();
         }
     }
-
 }

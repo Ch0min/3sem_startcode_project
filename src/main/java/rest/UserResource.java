@@ -3,14 +3,13 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.UserDTO;
-import entities.User;
 
-import java.util.List;
 import javax.annotation.security.RolesAllowed;
-import javax.persistence.*;
+import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import errorhandling.API_Exception;
 import facades.UserFacade;
 import utils.EMF_Creator;
 
@@ -27,6 +26,31 @@ public class UserResource {
     @Context
     SecurityContext securityContext;
 
+    //Just to verify if the database is setup
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getInfoForAll() {
+        return "{\"msg\":\"Hello anonymous\"}";
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("user")
+    @RolesAllowed("user")
+    public String getFromUser() {
+        String thisuser = securityContext.getUserPrincipal().getName();
+        return "{\"msg\": \"Hello to User: " + thisuser + "\"}";
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("admin")
+    @RolesAllowed("admin")
+    public String getFromAdmin() {
+        String thisuser = securityContext.getUserPrincipal().getName();
+        return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
+    }
+
 
     /* RESOURCE METHODS */
 
@@ -40,7 +64,7 @@ public class UserResource {
     @GET
     @Path("user/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getUserByID(@PathParam("id") long id) {
+    public Response getUserByID(@PathParam("id") Long id) {
         UserDTO userId = facade.getUserByID(id);
         return Response.ok().entity(GSON.toJson(userId)).build();
     }
@@ -68,32 +92,5 @@ public class UserResource {
     public Response deleteUser(@PathParam("id") long id) {
         UserDTO userDeleted = facade.deleteUser(id);
         return Response.ok().entity(GSON.toJson(userDeleted)).build();
-    }
-
-
-    //Just to verify if the database is setup
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getInfoForAll() {
-        return "{\"msg\":\"Hello anonymous\"}";
-    }
-
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("user")
-    @RolesAllowed("user")
-    public String getFromUser() {
-        String thisuser = securityContext.getUserPrincipal().getName();
-        return "{\"msg\": \"Hello to User: " + thisuser + "\"}";
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("admin")
-    @RolesAllowed("admin")
-    public String getFromAdmin() {
-        String thisuser = securityContext.getUserPrincipal().getName();
-        return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
 }
