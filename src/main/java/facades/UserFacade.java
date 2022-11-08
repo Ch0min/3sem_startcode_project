@@ -34,7 +34,7 @@ public class UserFacade {
         EntityManager em = emf.createEntityManager();
         User user;
         try {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :username", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName= :username", User.class);
             query.setParameter("username", username);
             user = query.getSingleResult();
 
