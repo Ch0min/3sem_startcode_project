@@ -103,6 +103,12 @@ class UserResourceTest {
     }
 
     @Test
+    public void testServerIsUp() {
+        System.out.println("Testing is server UP");
+        given().when().get("/info").then().statusCode(200);
+    }
+
+    @Test
     void getAllUsers() {
         List<UserDTO> userDTOList;
 
@@ -132,7 +138,6 @@ class UserResourceTest {
 
 
     }
-
 
 
     @Test
