@@ -9,7 +9,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import errorhandling.API_Exception;
 import facades.UserFacade;
 import utils.EMF_Creator;
 
@@ -76,6 +75,7 @@ public class UserResource {
         UserDTO udto = facade.createUser(GSON.fromJson(content, UserDTO.class));
         return Response.ok().entity(GSON.toJson(udto)).build();
     }
+
 
     @PUT
     @Path("user/update")

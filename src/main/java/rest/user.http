@@ -11,10 +11,10 @@ POST http://localhost:8080/api/info
 Content-Type: application/json
 
 {
-  "userName": "Testemor",
-  "userPass": "Lol123",
+  "userName": "marktest",
+  "userPass": "test123",
   "roles": [
-    ""
+    "user"
   ]
 }
 
@@ -23,11 +23,11 @@ PUT http://localhost:8080/api/info/user/update
 Content-Type: application/json
 
 {
-  "id": 3,
-  "userName": "Testefar",
+  "id": 2,
+  "userName": "user",
   "userPass": "test123",
   "roles": [
-    "user"
+    "admin"
   ]
 }
 

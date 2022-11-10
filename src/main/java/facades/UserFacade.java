@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.UserDTO;
+import entities.Role;
 import entities.User;
 
 import javax.persistence.*;
@@ -80,9 +81,9 @@ public class UserFacade {
     }
 
     public UserDTO createUser(UserDTO userDTO) {
-        User user = new User(userDTO);
         EntityManager em = emf.createEntityManager();
         try {
+            User user = new User(userDTO);
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
@@ -95,8 +96,11 @@ public class UserFacade {
 
     public UserDTO updateUser(UserDTO userDTO) {
         User user = new User(userDTO);
-        EntityManager em = getEntityManager();
+        user.getRoleList().forEach(role -> {
+            role.getUserList().add(user);
+        });
 
+        EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             em.merge(user);
