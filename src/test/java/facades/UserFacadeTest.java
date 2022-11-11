@@ -91,7 +91,7 @@ public class UserFacadeTest {
     }
 
 
-    // Kan køres med cascadetype.persist eller all inde i user klassen.
+    // Kan køres med cascadetype.persist eller all inde i user klassen. HTTPS og metoder virker. Bare ikke testene "create".
 //    @Test
 //    void createUser() {
 //        List<String> roles = new ArrayList<>();
