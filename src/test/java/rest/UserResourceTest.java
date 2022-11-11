@@ -153,7 +153,7 @@ class UserResourceTest {
                 .header("Content-type", ContentType.JSON)
                 .body(GSON.toJson(userDTO))
                 .when()
-                .put("/info/user/update")
+                .put("/info/user/update/" + u1.getId())
                 .then()
                 .assertThat()
                 .statusCode(200)
