@@ -1,6 +1,5 @@
 package dtos;
 
-import entities.Role;
 import entities.User;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -25,14 +24,14 @@ public class UserDTO {
 
     public UserDTO(String userName, String userPass, List<String> roles) {
         this.userName = userName;
-        this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
+        this.userPass = userPass;
         this.roles = roles;
     }
 
     public UserDTO(User u) {
         this.id = u.getId();
         this.userName = u.getUserName();
-        this.userPass = BCrypt.hashpw(u.getUserPass(), BCrypt.gensalt());
+        this.userPass = u.getUserPass();
         this.roles = u.getRolesAsStrings();
     }
 

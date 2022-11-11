@@ -11,7 +11,7 @@ POST http://localhost:8080/api/info
 Content-Type: application/json
 
 {
-  "userName": "marktest",
+  "userName": "rehman",
   "userPass": "test123",
   "roles": [
     "user"
@@ -19,20 +19,18 @@ Content-Type: application/json
 }
 
 ### Update a User
-PUT http://localhost:8080/api/info/user/update
+PUT http://localhost:8080/api/info/user/update/5
 Content-Type: application/json
 
 {
-  "id": 2,
-  "userName": "user",
+  "userName": "marktest",
   "userPass": "test123",
   "roles": [
-    "admin"
+    "user", "admin"
   ]
 }
 
 
-
 ### Delete A User
-DELETE http://localhost:8080/api/info/user/4
+DELETE http://localhost:8080/api/info/user/6
 Content-Type: application/json

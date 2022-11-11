@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import entities.User;
 import facades.UserFacade;
 import utils.EMF_Creator;
 
@@ -76,13 +77,14 @@ public class UserResource {
         return Response.ok().entity(GSON.toJson(udto)).build();
     }
 
-
     @PUT
-    @Path("user/update")
+    @Path("user/update/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response updateUser(String content) {
-        UserDTO userDTO = facade.updateUser(GSON.fromJson(content, UserDTO.class));
-        return Response.ok().entity(GSON.toJson(userDTO)).build();
+    public String updateUser(@PathParam("id") long id, String content) {
+        UserDTO userDTO = GSON.fromJson(content, UserDTO.class);
+        userDTO.setId(id);
+        userDTO = facade.updateUser(userDTO);
+        return GSON.toJson(userDTO);
     }
 
 

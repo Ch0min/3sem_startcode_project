@@ -90,21 +90,21 @@ class UserResourceTest {
 
     @Test
     void getAllUsers() {
-        given()
-                .when()
-                .get("/info/all")
-                .then().equals(contains(new UserDTO(u1)));
-
-//        List<UserDTO> userDTOList = given()
-//                .contentType("application/json")
+//        given()
 //                .when()
 //                .get("/info/all")
-//                .then()
-//                .extract().body().jsonPath().getList("", UserDTO.class);
-//
-//        UserDTO u1dto = new UserDTO(u1);
-//        UserDTO u2dto = new UserDTO(u2);
-//        assertThat(userDTOList, containsInAnyOrder(u1dto, u2dto));
+//                .then().equals(contains(new UserDTO(u1)));
+
+        List<UserDTO> userDTOList = given()
+                .contentType("application/json")
+                .when()
+                .get("/info/all")
+                .then()
+                .extract().body().jsonPath().getList("", UserDTO.class);
+
+        UserDTO u1dto = new UserDTO(u1);
+        UserDTO u2dto = new UserDTO(u2);
+        assertThat(userDTOList, containsInAnyOrder(u1dto, u2dto));
 //        assertEquals(2, userDTOList.size());      // Virker også
     }
 
@@ -112,17 +112,17 @@ class UserResourceTest {
 
     @Test
     void getUserById() {
-        given()
-                .when()
-                .get("/info/user/" + u1.getId())
-                .then().equals((new UserDTO(u1)));
-
-//        UserDTO userDTO = given()
-//                .contentType("application/json")
+//        given()
 //                .when()
-//                .get("/info/user/" + u1.getId()).as(UserDTO.class);
-//
-//        assertThat(userDTO, equalTo(new UserDTO(u1)));
+//                .get("/info/user/" + u1.getId())
+//                .then().equals((new UserDTO(u1)));
+
+        UserDTO userDTO = given()
+                .contentType("application/json")
+                .when()
+                .get("/info/user/" + u1.getId()).as(UserDTO.class);
+
+        assertThat(userDTO, equalTo(new UserDTO(u1)));
     }
 
 

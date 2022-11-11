@@ -54,7 +54,7 @@ public class User implements Serializable {
 
     public User(String userName, String userPass, List<Role> roleList) {
         this.userName = userName;
-        this.userPass = userPass;
+        this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
         this.roleList = roleList;
     }
 
@@ -72,8 +72,9 @@ public class User implements Serializable {
         this.userName = userDTO.getUserName();
         this.userPass = BCrypt.hashpw(userDTO.getUserPass(), BCrypt.gensalt());
         List<Role> roleList = new ArrayList<>();
-        for (String role : userDTO.getRoles()) {
-            roleList.add(new Role(role));
+        for (String roleString : userDTO.getRoles()) {
+            Role role = new Role(roleString);
+            roleList.add(role);
         }
         this.roleList = roleList;
     }
@@ -125,5 +126,15 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", userPass='" + userPass + '\'' +
+                ", roleList=" + roleList +
+                '}';
     }
 }

@@ -81,16 +81,12 @@ public class UserFacade {
     }
 
     public UserDTO createUser(UserDTO userDTO) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            User user = new User(userDTO);
+        EntityManager em = getEntityManager();
+        User user = new User(userDTO);
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
             return new UserDTO(user);
-        } finally {
-            em.close();
-        }
     }
 
 
